@@ -681,6 +681,423 @@
     margin-right: 6px;
     vertical-align: middle;
   }
+
+
+
+
+
+
+
+
+
+
+
+
+  /* ─── BRAVAIS LATTICE EXPLORER ─────────────────────────── */
+  #bz-app {
+    background: linear-gradient(180deg, rgba(10,16,32,0.75), rgba(15,25,40,0.88));
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 12px 30px rgba(0,0,0,0.22);
+  }
+
+  .bz-header {
+    padding: 12px 18px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    background: rgba(6,10,18,0.75);
+    flex-wrap: wrap;
+  }
+
+  .bz-logo {
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: -0.2px;
+    color: var(--text);
+  }
+  .bz-logo span { color: var(--accent); }
+
+  .bz-tagline {
+    font-size: 12px;
+    color: var(--text2);
+    font-weight: 400;
+    flex: 1;
+  }
+
+  .bz-system-pills {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+
+  .bz-pill {
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.2s;
+    border: 1px solid transparent;
+    opacity: 0.65;
+  }
+  .bz-pill:hover { opacity: 1; }
+  .bz-pill.active { opacity: 1; border-color: currentColor; }
+
+  .bz-pill[data-sys="Cubic"] { color: #ff6b6b; background: rgba(255,107,107,0.12); }
+  .bz-pill[data-sys="Tetragonal"] { color: #b388ff; background: rgba(179,136,255,0.12); }
+  .bz-pill[data-sys="Orthorhombic"] { color: #64b5f6; background: rgba(100,181,246,0.12); }
+  .bz-pill[data-sys="Monoclinic"] { color: #69f0ae; background: rgba(105,240,174,0.12); }
+  .bz-pill[data-sys="Triclinic"] { color: #ffb74d; background: rgba(255,183,77,0.12); }
+  .bz-pill[data-sys="Trigonal"] { color: #4dd0e1; background: rgba(77,208,225,0.12); }
+  .bz-pill[data-sys="Hexagonal"] { color: #ffd54f; background: rgba(255,213,79,0.12); }
+
+  .bz-main {
+    display: flex;
+    min-height: 620px;
+    overflow: hidden;
+  }
+
+  .bz-sidebar {
+    width: 240px;
+    flex-shrink: 0;
+    background: rgba(10,16,32,0.55);
+    border-right: 1px solid var(--border);
+    overflow-y: auto;
+    padding: 10px 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+  .bz-sidebar::-webkit-scrollbar { width: 4px; }
+  .bz-sidebar::-webkit-scrollbar-thumb {
+    background: rgba(79,195,247,0.15);
+    border-radius: 2px;
+  }
+
+  .bz-sidebar-group-label {
+    font-family: var(--mono);
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text2);
+    padding: 8px 8px 4px;
+    opacity: 0.7;
+  }
+
+  .bz-lat-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 9px 10px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.18s;
+    border: 1px solid transparent;
+    background: transparent;
+    text-align: left;
+  }
+  .bz-lat-btn:hover { background: rgba(79,195,247,0.06); }
+  .bz-lat-btn.active {
+    background: rgba(79,195,247,0.09);
+    border-color: rgba(79,195,247,0.18);
+  }
+
+  .bz-lat-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .bz-lat-info { flex: 1; min-width: 0; }
+
+  .bz-lat-name {
+    font-size: 11.5px;
+    font-weight: 500;
+    color: var(--text);
+    line-height: 1.2;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .bz-lat-abbrev {
+    font-size: 10px;
+    color: var(--text2);
+    font-family: var(--mono);
+  }
+
+  .bz-viewport {
+    flex: 1;
+    position: relative;
+    min-width: 0;
+    overflow: hidden;
+    background: var(--bg2);
+  }
+
+  #bz-canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+    cursor: grab;
+  }
+  #bz-canvas:active { cursor: grabbing; }
+
+  .bz-info-overlay {
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    background: rgba(6,10,18,0.9);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(79,195,247,0.15);
+    border-radius: 12px;
+    padding: 14px 18px;
+    min-width: 420px;
+    max-width: 620px;
+    pointer-events: none;
+    animation: bzFadeIn 0.25s ease;
+  }
+
+  .bz-info-title {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text);
+    line-height: 1.2;
+  }
+
+  .bz-info-abbrev {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--accent);
+    margin-top: 2px;
+  }
+
+  .bz-info-system {
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-top: 6px;
+    padding: 3px 8px;
+    border-radius: 4px;
+    display: inline-block;
+  }
+
+  .bz-info-divider {
+    margin: 10px 0 8px;
+    border: none;
+    border-top: 1px solid var(--border);
+  }
+
+  .bz-info-section-label {
+    font-family: var(--mono);
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text2);
+    margin-bottom: 6px;
+    opacity: 0.75;
+  }
+
+  .bz-kpts-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 4px;
+  }
+
+  .bz-kpt-chip {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(79,195,247,0.08);
+    border-radius: 6px;
+    padding: 4px 6px;
+    text-align: center;
+  }
+
+  .bz-kpt-label {
+    font-family: var(--mono);
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--text);
+  }
+
+  .bz-kpt-coords {
+    font-family: var(--mono);
+    font-size: 8px;
+    color: var(--text2);
+    margin-top: 1px;
+    line-height: 1.3;
+    opacity: 0.75;
+  }
+
+.bz-path-row {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 6px;
+  white-space: nowrap;
+  overflow-x: auto;
+  padding-bottom: 6px;
+}
+.bz-path-row::-webkit-scrollbar {
+  height: 4px;
+}
+
+.bz-path-row::-webkit-scrollbar-thumb {
+  background: rgba(79,195,247,0.25);
+  border-radius: 4px;
+}
+
+.bz-path-break {
+  height: 8px;
+}
+
+  .bz-path-pt {
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--text);
+  }
+
+  .bz-path-arrow {
+    font-size: 10px;
+    color: var(--text2);
+    opacity: 0.75;
+  }
+
+  .bz-controls {
+    position: absolute;
+    bottom: 16px;
+    right: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    align-items: flex-end;
+  }
+
+  .bz-ctrl-group {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
+
+  .bz-ctrl-btn {
+    background: rgba(6,10,18,0.9);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(79,195,247,0.15);
+    color: var(--text);
+    border-radius: 8px;
+    padding: 7px 12px;
+    font-size: 11px;
+    font-family: var(--sans);
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .bz-ctrl-btn:hover {
+    background: rgba(79,195,247,0.08);
+    border-color: rgba(79,195,247,0.35);
+    color: var(--accent);
+  }
+
+  .bz-toggle-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(6,10,18,0.9);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(79,195,247,0.15);
+    border-radius: 8px;
+    padding: 6px 10px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
+
+  .bz-toggle-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--text2);
+  }
+
+  .bz-toggle-switch {
+    width: 28px;
+    height: 16px;
+    background: rgba(255,255,255,0.12);
+    border-radius: 8px;
+    position: relative;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .bz-toggle-switch.on { background: var(--accent); }
+
+  .bz-toggle-knob {
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    background: white;
+    border-radius: 50%;
+    top: 2px;
+    left: 2px;
+    transition: left 0.2s;
+  }
+  .bz-toggle-switch.on .bz-toggle-knob { left: 14px; }
+
+  .bz-hint {
+    position: absolute;
+    bottom: 16px;
+    left: 16px;
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--text2);
+    opacity: 0.55;
+    pointer-events: none;
+  }
+
+  @keyframes bzFadeIn {
+    from { opacity:0; transform: translateY(4px); }
+    to { opacity:1; transform: translateY(0); }
+  }
+
+  @media (max-width: 900px) {
+    .bz-main {
+      flex-direction: column;
+      min-height: auto;
+    }
+    .bz-sidebar {
+      width: 100%;
+      max-height: 220px;
+      border-right: none;
+      border-bottom: 1px solid var(--border);
+    }
+    .bz-viewport {
+      min-height: 520px;
+    }
+    .bz-info-overlay {
+      max-width: 480px;
+    }
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 </style>
 </head>
 <body>
@@ -1027,54 +1444,97 @@
         <span style="color:var(--text2);">• Drag to rotate</span>
       </div>
     </div>
-  </section>
-  <div class="divider"></div>
 
-  <!-- BRAVAIS LATTICES -->
-  <section id="bravais">
-    <div class="section-tag">// 05.6 · crystallography</div>
-    <h2 class="section-title">Bravais Lattices & Brillouin Zones</h2>
-    <p style="font-size:14px; color:var(--text2); max-width:680px; line-height:1.8; margin-bottom:32px;">
-      Interactive 3D explorer of all 14 Bravais lattices with first Brillouin zones and high-symmetry k-paths.
-    </p>
 
-    <div id="bravais-app" style="background:var(--bg3);border:1px solid var(--border);border-radius:12px;overflow:hidden;height:580px;display:flex;flex-direction:column;">
-      <div style="padding:18px 24px;border-bottom:1px solid var(--border);background:var(--bg2);display:flex;align-items:center;gap:20px;flex-wrap:wrap;">
-        <div class="section-tag" style="margin:0;">14 Bravais Lattices</div>
-        <div id="sysPills" style="display:flex;gap:6px;flex-wrap:wrap;">
-          <div class="pill active" data-sys="All" style="background:rgba(79,195,247,0.12);color:var(--accent);border:1px solid rgba(79,195,247,0.4);">All</div>
-          <div class="pill" data-sys="Cubic" style="color:#ff6d00;">Cubic</div>
-          <div class="pill" data-sys="Tetragonal" style="color:#7c4dff;">Tetragonal</div>
-          <div class="pill" data-sys="Orthorhombic" style="color:#00e676;">Orthorhombic</div>
-          <div class="pill" data-sys="Monoclinic" style="color:#4fc3f7;">Monoclinic</div>
-          <div class="pill" data-sys="Triclinic" style="color:#ffaa44;">Triclinic</div>
-          <div class="pill" data-sys="Trigonal" style="color:#b39ddb;">Trigonal</div>
-          <div class="pill" data-sys="Hexagonal" style="color:#ffb74d;">Hexagonal</div>
+
+
+
+
+
+<div style="height:32px"></div>
+
+<div class="section-tag">// 05.6 · reciprocal space</div>
+<h2 class="section-title" style="font-size:28px; margin-bottom:18px;">Bravais Lattice Explorer</h2>
+<p style="font-size:14px; color:var(--text2); max-width:760px; line-height:1.8; margin-bottom:28px;">
+  Interactive visualization of all 14 Bravais lattices in reciprocal space, including
+  high-symmetry k-points and standard band-structure paths.
+</p>
+
+<div id="bz-app">
+  <div class="bz-header">
+    <div class="bz-logo">BZ <span>Explorer</span></div>
+    <div class="bz-tagline">14 Bravais Lattices · High-Symmetry k-Points · Interactive 3D</div>
+    <div class="bz-system-pills" id="bz-sysPills">
+      <div class="bz-pill active" data-sys="All">All</div>
+      <div class="bz-pill" data-sys="Cubic">Cubic</div>
+      <div class="bz-pill" data-sys="Tetragonal">Tetragonal</div>
+      <div class="bz-pill" data-sys="Orthorhombic">Orthorhombic</div>
+      <div class="bz-pill" data-sys="Monoclinic">Monoclinic</div>
+      <div class="bz-pill" data-sys="Triclinic">Triclinic</div>
+      <div class="bz-pill" data-sys="Trigonal">Trigonal</div>
+      <div class="bz-pill" data-sys="Hexagonal">Hexagonal</div>
+    </div>
+  </div>
+
+  <div class="bz-main">
+    <div class="bz-sidebar" id="bz-sidebar"></div>
+
+    <div class="bz-viewport">
+      <canvas id="bz-canvas"></canvas>
+      <div class="bz-info-overlay" id="bz-infoOverlay"></div>
+
+      <div class="bz-controls">
+        <div class="bz-ctrl-group">
+          <button class="bz-ctrl-btn" id="bz-btnAutoRotate">⟳ Auto-Rotate</button>
+          <button class="bz-ctrl-btn" id="bz-btnReset">⌂ Reset View</button>
         </div>
-      </div>
 
-      <div style="flex:1;display:flex;min-height:0;">
-        <!-- Sidebar -->
-        <div id="bravais-sidebar" style="width:260px;background:var(--bg3);border-right:1px solid var(--border);overflow-y:auto;padding:12px 8px;"></div>
-        
-        <!-- 3D Viewer -->
-        <div style="flex:1;position:relative;background:#0a1020;">
-          <canvas id="bravais-canvas" style="width:100%;height:100%;display:block;"></canvas>
-          
-          <!-- Info Panel -->
-          <div id="bravais-info" style="position:absolute;top:20px;left:20px;background:rgba(6,10,18,0.92);backdrop-filter:blur(12px);border:1px solid var(--border);border-radius:10px;padding:16px 18px;max-width:280px;font-size:13.5px;line-height:1.5;"></div>
-          
-          <!-- Controls -->
-          <div style="position:absolute;bottom:20px;right:20px;display:flex;flex-direction:column;gap:8px;">
-            <button onclick="toggleAutoRotate()" class="btn-outline" id="btnRotate" style="font-size:11px;padding:8px 16px;">⟳ Auto Rotate</button>
-            <button onclick="resetView()" class="btn-outline" style="font-size:11px;padding:8px 16px;">Reset View</button>
+        <div class="bz-toggle-row">
+          <span class="bz-toggle-label">Show Faces</span>
+          <div class="bz-toggle-switch on" id="bz-toggleFaces">
+            <div class="bz-toggle-knob"></div>
+          </div>
+
+          <span class="bz-toggle-label">Show Path</span>
+          <div class="bz-toggle-switch on" id="bz-togglePath">
+            <div class="bz-toggle-knob"></div>
+          </div>
+
+          <span class="bz-toggle-label">Show Labels</span>
+          <div class="bz-toggle-switch on" id="bz-toggleLabels">
+            <div class="bz-toggle-knob"></div>
           </div>
         </div>
       </div>
-    </div>
-  </section>
 
+      <div class="bz-hint">Drag to rotate · Scroll to zoom · Right-drag to pan</div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  </section>
   <div class="divider"></div>
+
+
+
+
+
+
 
   <!-- CONTACT -->
   <section id="contact">
@@ -2096,215 +2556,619 @@ new ResizeObserver(resize).observe(wrap);
 loadPg('2m');
 animate();
 </script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+
+
+
 <script>
-// Bravais Lattices Interactive 3D Explorer (fully adapted)
-const π = Math.PI;
-function v3(x,y,z){return new THREE.Vector3(x,y,z);}
+// ══════════════════════════════════════════════
+// BRAVAIS LATTICE EXPLORER
+// ══════════════════════════════════════════════
+(function(){
+  const bzPi = Math.PI;
+  function bzV3(x,y,z){ return new THREE.Vector3(x,y,z); }
 
-const LATTICES = [ /* full list from your provided code - same as you gave */ 
-  {name:'Simple Cubic', abbrev:'cP', system:'Cubic', a1:v3(1,0,0), a2:v3(0,1,0), a3:v3(0,0,1), kpoints:{ 'Γ':[0,0,0], 'X':[0.5,0,0], 'M':[0.5,0.5,0], 'R':[0.5,0.5,0.5] }, path:[['Γ','X','M','Γ','R','X'],['M','R']] },
-  {name:'Body-Centred Cubic', abbrev:'cI', system:'Cubic', a1:v3(-0.5,0.5,0.5), a2:v3(0.5,-0.5,0.5), a3:v3(0.5,0.5,-0.5), kpoints:{ 'Γ':[0,0,0], 'H':[0.5,-0.5,0.5], 'P':[0.25,0.25,0.25], 'N':[0,0,0.5] }, path:[['Γ','H','N','Γ','P','H'],['P','N']] },
-  {name:'Face-Centred Cubic', abbrev:'cF', system:'Cubic', a1:v3(0,0.5,0.5), a2:v3(0.5,0,0.5), a3:v3(0.5,0.5,0), kpoints:{ 'Γ':[0,0,0], 'X':[0.5,0,0.5], 'L':[0.5,0.5,0.5], 'W':[0.5,0.25,0.75], 'K':[0.375,0.375,0.75], 'U':[0.625,0.25,0.625] }, path:[['Γ','X','W','K','Γ','L','U','W','L','K'],['U','X']] },
-  {name:'Simple Tetragonal', abbrev:'tP', system:'Tetragonal', a1:v3(1,0,0), a2:v3(0,1,0), a3:v3(0,0,1.5), kpoints:{ 'Γ':[0,0,0], 'X':[0.5,0,0], 'M':[0.5,0.5,0], 'Z':[0,0,0.5], 'R':[0.5,0,0.5], 'A':[0.5,0.5,0.5] }, path:[['Γ','X','M','Γ','Z','R','A','Z']] },
-  {name:'Simple Orthorhombic', abbrev:'oP', system:'Orthorhombic', a1:v3(1,0,0), a2:v3(0,1.3,0), a3:v3(0,0,1.7), kpoints:{ 'Γ':[0,0,0], 'X':[0.5,0,0], 'Y':[0,0.5,0], 'Z':[0,0,0.5], 'S':[0.5,0.5,0], 'R':[0.5,0.5,0.5] }, path:[['Γ','X','S','Y','Γ','Z','R']] },
-  {name:'Simple Monoclinic', abbrev:'mP', system:'Monoclinic', a1:v3(1,0,0), a2:v3(0,1.2,0), a3:v3(-0.51,0,1.41), kpoints:{ 'Γ':[0,0,0], 'Y':[0.5,0,0], 'H':[0,0.5,0], 'Z':[0,0,0.5], 'M':[0.5,0.5,0.5] }, path:[['Γ','Y','H','A','Γ','Z','M']] },
-  {name:'Simple Hexagonal', abbrev:'hP', system:'Hexagonal', a1:v3(1,0,0), a2:v3(-0.5,0.866,0), a3:v3(0,0,1.6), kpoints:{ 'Γ':[0,0,0], 'M':[0.5,0,0], 'K':[0.333,0.333,0], 'A':[0,0,0.5], 'L':[0.5,0,0.5], 'H':[0.333,0.333,0.5] }, path:[['Γ','M','K','Γ','A','L','H','A']] },
-  {name:'Simple Triclinic', abbrev:'aP', system:'Triclinic', a1:v3(1,0,0), a2:v3(-0.174,1.085,0), a3:v3(-0.174,-0.234,1.27), kpoints:{ 'Γ':[0,0,0], 'X':[0.5,0,0], 'Y':[0,0.5,0], 'Z':[0.5,0.5,0], 'R':[0.5,0.5,0.5] }, path:[['Γ','X','Y','Z','Γ','R']] }
-];
+  const BZ_SYSTEM_COLORS = {
+    Cubic: '#ff6b6b',
+    Tetragonal: '#b388ff',
+    Orthorhombic: '#64b5f6',
+    Monoclinic: '#69f0ae',
+    Triclinic: '#ffb74d',
+    Trigonal: '#4dd0e1',
+    Hexagonal: '#ffd54f'
+  };
 
-const canvas = document.getElementById('bravais-canvas');
-const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
-renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-renderer.setClearColor(0x0a1020, 1);
-
-const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera(45, 1, 0.01, 100);
-camera.position.set(5, 4, 6);
-
-scene.add(new THREE.AmbientLight(0xffffff, 0.75));
-const dirLight = new THREE.DirectionalLight(0xffffff, 0.6);
-dirLight.position.set(6, 8, 5);
-scene.add(dirLight);
-
-let currentLatticeIdx = 0;
-let autoRotate = false;
-let isDragging = false;
-let lastX = 0, lastY = 0;
-let spherical = new THREE.Spherical().setFromVector3(camera.position);
-
-function resize() {
-  const rect = canvas.getBoundingClientRect();
-  renderer.setSize(rect.width, rect.height);
-  camera.aspect = rect.width / rect.height;
-  camera.updateProjectionMatrix();
-}
-window.addEventListener('resize', resize);
-resize();
-
-function buildBZ(lat) {
-  const [b1,b2,b3] = reciprocal(lat.a1, lat.a2, lat.a3);
-  const pts = [];
-  for(let i=-2;i<=2;i++) for(let j=-2;j<=2;j++) for(let k=-2;k<=2;k++){
-    pts.push(new THREE.Vector3().addScaledVector(b1,i).addScaledVector(b2,j).addScaledVector(b3,k));
+  function bzReciprocal(a1,a2,a3){
+    const vol = a1.dot(new THREE.Vector3().crossVectors(a2,a3));
+    const b1 = new THREE.Vector3().crossVectors(a2,a3).multiplyScalar(2*bzPi/vol);
+    const b2 = new THREE.Vector3().crossVectors(a3,a1).multiplyScalar(2*bzPi/vol);
+    const b3 = new THREE.Vector3().crossVectors(a1,a2).multiplyScalar(2*bzPi/vol);
+    return [b1,b2,b3];
   }
-  const nn = pts.filter(p=>p.length()>0.01).sort((a,b)=>a.length()-b.length()).slice(0,26);
-  const vertices = [];
-  for(let i=0;i<nn.length;i++)
-    for(let j=i+1;j<nn.length;j++)
-      for(let k=j+1;k<nn.length;k++){
-        const v = intersectThreePlanes(nn[i],nn[j],nn[k]);
-        if(v && isInsideAll(v, nn)) vertices.push(v);
-      }
-  return vertices.length >= 4 ? {vertices, b1, b2, b3} : null;
-}
 
-function intersectThreePlanes(n1,n2,n3) {
-  const A = [[n1.x,n1.y,n1.z],[n2.x,n2.y,n2.z],[n3.x,n3.y,n3.z]];
-  const b = [n1.dot(n1)/2, n2.dot(n2)/2, n3.dot(n3)/2];
-  const det = A[0][0]*(A[1][1]*A[2][2]-A[1][2]*A[2][1]) -A[0][1]*(A[1][0]*A[2][2]-A[1][2]*A[2][0]) +A[0][2]*(A[1][0]*A[2][1]-A[1][1]*A[2][0]);
-  if(Math.abs(det)<1e-8) return null;
-  const x = (b[0]*(A[1][1]*A[2][2]-A[1][2]*A[2][1]) - A[0][1]*(b[1]*A[2][2]-A[1][2]*b[2]) + A[0][2]*(b[1]*A[2][1]-A[1][1]*b[2])) / det;
-  const y = (A[0][0]*(b[1]*A[2][2]-A[1][2]*b[2]) - b[0]*(A[1][0]*A[2][2]-A[1][2]*A[2][0]) + A[0][2]*(A[1][0]*b[2]-b[1]*A[2][0])) / det;
-  const z = (A[0][0]*(A[1][1]*b[2]-b[1]*A[2][1]) - A[0][1]*(A[1][0]*b[2]-b[1]*A[2][0]) + b[0]*(A[1][0]*A[2][1]-A[1][1]*A[2][0])) / det;
-  return new THREE.Vector3(x,y,z);
-}
+  function bzFracToCart(frac,b1,b2,b3){
+    return bzV3(
+      frac[0]*b1.x + frac[1]*b2.x + frac[2]*b3.x,
+      frac[0]*b1.y + frac[1]*b2.y + frac[2]*b3.y,
+      frac[0]*b1.z + frac[1]*b2.z + frac[2]*b3.z
+    );
+  }
 
-function isInsideAll(v, nn) {
-  for(const p of nn) if(v.dot(p) > p.dot(p)/2 + 1e-5) return false;
-  return true;
-}
+  const BZ_LATTICES = [
+    {
+      name:'Simple Cubic', abbrev:'cP', system:'Cubic',
+      a1:bzV3(1,0,0), a2:bzV3(0,1,0), a3:bzV3(0,0,1),
+      kpoints:{ 'Γ':[0,0,0], 'X':[0.5,0,0], 'M':[0.5,0.5,0], 'R':[0.5,0.5,0.5] },
+      path:[['Γ','X','M','Γ','R','X','M','R']]
+    },
+    {
+      name:'Body-Centred Cubic', abbrev:'cI', system:'Cubic',
+      a1:bzV3(-0.5,0.5,0.5), a2:bzV3(0.5,-0.5,0.5), a3:bzV3(0.5,0.5,-0.5),
+      kpoints:{ 'Γ':[0,0,0], 'H':[0.5,-0.5,0.5], 'P':[0.25,0.25,0.25], 'N':[0,0,0.5] },
+      path:[['Γ','H','N','Γ','P','H','P','N']]
+    },
+    {
+      name:'Face-Centred Cubic', abbrev:'cF', system:'Cubic',
+      a1:bzV3(0,0.5,0.5), a2:bzV3(0.5,0,0.5), a3:bzV3(0.5,0.5,0),
+      kpoints:{ 'Γ':[0,0,0], 'X':[0.5,0,0.5], 'L':[0.5,0.5,0.5], 'W':[0.5,0.25,0.75], 'K':[0.375,0.375,0.75], 'U':[0.625,0.25,0.625] },
+      path:[['Γ','X','W','K','Γ','L','U','W','L','K','U','X']]
+    },
+    {
+      name:'Simple Tetragonal', abbrev:'tP', system:'Tetragonal',
+      a1:bzV3(1,0,0), a2:bzV3(0,1,0), a3:bzV3(0,0,1.5),
+      kpoints:{ 'Γ':[0,0,0], 'X':[0.5,0,0], 'M':[0.5,0.5,0], 'Z':[0,0,0.5], 'R':[0.5,0,0.5], 'A':[0.5,0.5,0.5] },
+      path:[['Γ','X','M','Γ','Z','R','A','Z'],['X','R','M','A']]
+    },
+    {
+      name:'Body-Centred Tetragonal', abbrev:'tI', system:'Tetragonal',
+      a1:bzV3(-0.5,0.5,0.7), a2:bzV3(0.5,-0.5,0.7), a3:bzV3(0.5,0.5,-0.7),
+      kpoints:{ 'Γ':[0,0,0], 'X':[0,0.5,0], 'M':[-0.5,0.5,0.5], 'N':[0,0.5,-0.5], 'P':[0.25,0.25,0.25] },
+      path:[['Γ','X','M','Γ','N','P','X','P']]
+    },
+    {
+      name:'Simple Orthorhombic', abbrev:'oP', system:'Orthorhombic',
+      a1:bzV3(1,0,0), a2:bzV3(0,1.3,0), a3:bzV3(0,0,1.7),
+      kpoints:{ 'Γ':[0,0,0], 'X':[0.5,0,0], 'Y':[0,0.5,0], 'Z':[0,0,0.5], 'S':[0.5,0.5,0], 'T':[0,0.5,0.5], 'U':[0.5,0,0.5], 'R':[0.5,0.5,0.5] },
+      path:[['Γ','X','S','Y','Γ','Z','U','R','T','Z','Y','T','X','U','S','R']]
+    },
+    {
+      name:'Face-Centred Orthorhombic', abbrev:'oF', system:'Orthorhombic',
+      a1:bzV3(0,0.65,0.85), a2:bzV3(0.5,0,0.85), a3:bzV3(0.5,0.65,0),
+      kpoints:{ 'Γ':[0,0,0], 'Y':[0.5,0.5,-0.5], 'T':[1,0.5,-0.5], 'Z':[0.5,0,0], 'L':[0.5,0.5,0.5] },
+      path:[['Γ','Y','L','Γ','Z','L','T','Z','Y','T']]
+    },
+    {
+      name:'Body-Centred Orthorhombic', abbrev:'oI', system:'Orthorhombic',
+      a1:bzV3(-0.5,0.65,0.8), a2:bzV3(0.5,-0.65,0.8), a3:bzV3(0.5,0.65,-0.8),
+      kpoints:{ 'Γ':[0,0,0], 'X':[-0.5,0.5,0.5], 'S':[0.5,0,0.5], 'R':[0,0.5,0.5], 'T':[0,0.5,0], 'W':[0.25,0.25,0.25] },
+      path:[['Γ','X','S','Γ','R','T','W','R','X','W'],['S','W'],['T','W']]
+    },
+    {
+      name:'C-Centred Orthorhombic', abbrev:'oC', system:'Orthorhombic',
+      a1:bzV3(0.5,-0.65,0), a2:bzV3(0.5,0.65,0), a3:bzV3(0,0,1.6),
+      kpoints:{ 'Γ':[0,0,0], 'Y':[0.5,-0.5,0], 'S':[0,0.5,0], 'T':[0,0.5,0.5], 'Z':[0,0,0.5], 'Q':[0.5,-0.5,0.5] },
+      path:[['Γ','Y','S','Γ','Z','T','Q','S','Y','Q','Z','Q']]
+    },
+    {
+  name:'Simple Monoclinic (Pm)', abbrev:'mP', system:'Monoclinic',
+  a1:bzV3(1,0,0), a2:bzV3(0,1.2,0), a3:bzV3(-0.51,0,1.41),
+  kpoints:{
+    'Γ':[0.0000000000, 0.0000000000, 0.0000000000],
+    'Z':[0.0000000000, 0.5000000000, 0.0000000000],
+    'D':[0.0000000000, 0.5000000000, 0.5000000000],
+    'B':[0.0000000000, 0.0000000000, 0.5000000000],
+    'A':[-0.5000000000, 0.0000000000, 0.5000000000],
+    'E':[-0.5000000000, 0.5000000000, 0.5000000000],
+    'C₂':[-0.5000000000, 0.5000000000, 0.0000000000],
+    'Y₂':[-0.5000000000, 0.0000000000, 0.0000000000]
+  },
+path:[
+  ['Γ','Z','D','B','Γ','A','E','Z','C₂','Y₂','Γ']
+]
+},
+    {
+      name:'C-Centred Monoclinic', abbrev:'mC', system:'Monoclinic',
+      a1:bzV3(0.5,-0.6,0), a2:bzV3(0.5,0.6,0), a3:bzV3(-0.51,0,1.41),
+      kpoints:{ 'Γ':[0,0,0], 'Y':[0.5,0.5,0], 'A':[0,0.5,0], 'M':[0.5,0,0.5], 'L':[0.5,0.5,0.5], 'Z':[0,0,0.5] },
+      path:[['Γ','Y','A','Γ','Z','M','L','A'],['Y','L']]
+    },
+    {
+      name:'Rhombohedral', abbrev:'hR', system:'Trigonal',
+      a1:bzV3(0.766,-0.643,0), a2:bzV3(0.766,0.643,0), a3:bzV3(0.342,0,0.94),
+      kpoints:{ 'Γ':[0,0,0], 'T':[0.5,0.5,0.5], 'F':[0.5,0.5,0], 'L':[0.5,0,0], 'Λ':[0,0,0.5], 'P':[0.25,0.25,0.25] },
+      path:[['Γ','L','T','F','Γ','P','T','Λ']]
+    },
+    {
+      name:'Simple Hexagonal', abbrev:'hP', system:'Hexagonal',
+      a1:bzV3(1,0,0), a2:bzV3(-0.5,0.866,0), a3:bzV3(0,0,1.6),
+      kpoints:{ 'Γ':[0,0,0], 'M':[0.5,0,0], 'K':[0.333,0.333,0], 'A':[0,0,0.5], 'L':[0.5,0,0.5], 'H':[0.333,0.333,0.5] },
+      path:[['Γ','M','K','Γ','A','L','H','A','M','L','K','H']]
+    },
+    {
+      name:'Simple Triclinic', abbrev:'aP', system:'Triclinic',
+      a1:bzV3(1,0,0), a2:bzV3(-0.174,1.085,0), a3:bzV3(-0.174,-0.234,1.27),
+      kpoints:{ 'Γ':[0,0,0], 'Z':[0.5,0.5,0], 'Y':[0,0.5,0], 'X':[0.5,0,0], 'R':[0.5,0.5,0.5], 'V':[0.5,0,0.5], 'U':[0,0.5,0.5], 'T':[0,0,0.5] },
+      path:[['Γ','X','Y','Z','Γ','T','V','R','U','Z','X','V','Y','U','T','R']]
+    }
+  ];
 
-function loadLattice(idx) {
-  currentLatticeIdx = idx;
-  const lat = LATTICES[idx];
-  const color = '#4fc3f7';
-  const colorHex = 0x4fc3f7;
+  const bzCanvas = document.getElementById('bz-canvas');
+  const bzApp = document.getElementById('bz-app');
+  if (!bzCanvas || !bzApp) return;
 
-  scene.children.filter(c => !c.isLight).forEach(c => scene.remove(c));
+  const bzRenderer = new THREE.WebGLRenderer({ canvas: bzCanvas, antialias:true, alpha:true });
+  bzRenderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  bzRenderer.setClearColor(0x0a1020, 1);
 
-  const bz = buildBZ(lat);
-  if(!bz) return;
-  const {vertices} = bz;
-  const maxR = Math.max(...vertices.map(v => v.length())) || 1;
-  const scale = 1.3 / maxR;
-  const verts = vertices.map(v => v.clone().multiplyScalar(scale));
+  const bzScene = new THREE.Scene();
+  const bzCamera = new THREE.PerspectiveCamera(45, 1, 0.01, 100);
+  bzCamera.position.set(4, 3, 5);
+  bzCamera.lookAt(0,0,0);
 
-  // Edges
-  const edgeMat = new THREE.LineBasicMaterial({color: colorHex, linewidth: 2.5, transparent: true, opacity: 0.9});
-  for(let i = 0; i < verts.length; i++) {
-    for(let j = i+1; j < verts.length; j++) {
-      if(verts[i].distanceTo(verts[j]) < 2.2) {
-        const geo = new THREE.BufferGeometry().setFromPoints([verts[i], verts[j]]);
-        scene.add(new THREE.Line(geo, edgeMat));
+  bzScene.add(new THREE.AmbientLight(0xffffff, 0.8));
+  const bzDLight = new THREE.DirectionalLight(0xffffff, 0.5);
+  bzDLight.position.set(5,8,5);
+  bzScene.add(bzDLight);
+
+  let bzAutoRotate = false;
+  let bzShowFaces = true, bzShowPath = true, bzShowLabels = true;
+  let bzIsDragging = false, bzIsRightDrag = false;
+  let bzLastMouse = {x:0,y:0};
+  let bzSpherical = new THREE.Spherical().setFromVector3(bzCamera.position);
+  let bzPanOffset = new THREE.Vector3();
+  let bzCurrentLatticeIdx = 0;
+
+  function bzResize(){
+    const w = bzCanvas.parentElement.clientWidth;
+    const h = bzCanvas.parentElement.clientHeight;
+    bzRenderer.setSize(w, h, false);
+    bzCamera.aspect = w / h;
+    bzCamera.updateProjectionMatrix();
+  }
+  window.addEventListener('resize', bzResize);
+  bzResize();
+
+  function bzIntersectThreePlanes(n1,n2,n3){
+    const A = [
+      [n1.x,n1.y,n1.z],
+      [n2.x,n2.y,n2.z],
+      [n3.x,n3.y,n3.z]
+    ];
+    const b = [n1.dot(n1)/2, n2.dot(n2)/2, n3.dot(n3)/2];
+    const det = A[0][0]*(A[1][1]*A[2][2]-A[1][2]*A[2][1])
+              - A[0][1]*(A[1][0]*A[2][2]-A[1][2]*A[2][0])
+              + A[0][2]*(A[1][0]*A[2][1]-A[1][1]*A[2][0]);
+    if (Math.abs(det) < 1e-10) return null;
+
+    const x = ( b[0]*(A[1][1]*A[2][2]-A[1][2]*A[2][1])
+              - A[0][1]*(b[1]*A[2][2]-A[1][2]*b[2])
+              + A[0][2]*(b[1]*A[2][1]-A[1][1]*b[2])) / det;
+
+    const y = ( A[0][0]*(b[1]*A[2][2]-A[1][2]*b[2])
+              - b[0]*(A[1][0]*A[2][2]-A[1][2]*A[2][0])
+              + A[0][2]*(A[1][0]*b[2]-b[1]*A[2][0])) / det;
+
+    const z = ( A[0][0]*(A[1][1]*b[2]-b[1]*A[2][1])
+              - A[0][1]*(A[1][0]*b[2]-b[1]*A[2][0])
+              + b[0]*(A[1][0]*A[2][1]-A[1][1]*A[2][0])) / det;
+
+    return new THREE.Vector3(x,y,z);
+  }
+
+  function bzBuildBZ(lat){
+    const [b1,b2,b3] = bzReciprocal(lat.a1,lat.a2,lat.a3);
+    const pts = [];
+
+    for(let i=-2;i<=2;i++){
+      for(let j=-2;j<=2;j++){
+        for(let k=-2;k<=2;k++){
+          pts.push(
+            new THREE.Vector3()
+              .addScaledVector(b1,i)
+              .addScaledVector(b2,j)
+              .addScaledVector(b3,k)
+          );
+        }
       }
     }
+
+    const nn = pts.filter(p=>p.length()>0.01).sort((a,b)=>a.length()-b.length()).slice(0,26);
+    const vertices = [];
+
+    for(let i=0;i<nn.length;i++){
+      for(let j=i+1;j<nn.length;j++){
+        for(let k=j+1;k<nn.length;k++){
+          const v = bzIntersectThreePlanes(nn[i],nn[j],nn[k]);
+          if(!v) continue;
+          let inside = true;
+          for(const p of nn){
+            if(v.dot(p) > p.dot(p)/2 + 1e-5){
+              inside = false;
+              break;
+            }
+          }
+          if(inside) vertices.push(v);
+        }
+      }
+    }
+
+    if(vertices.length < 4) return null;
+    return { vertices, b1, b2, b3 };
   }
 
-  // Faces
-  const faceMat = new THREE.MeshBasicMaterial({color: colorHex, transparent:true, opacity:0.09, side: THREE.DoubleSide});
-  const center = new THREE.Vector3();
-  verts.forEach(v => center.add(v));
-  center.divideScalar(verts.length);
-  for(let i = 0; i < verts.length; i++) {
-    const a = verts[i];
-    const b = verts[(i+1) % verts.length];
-    const geo = new THREE.BufferGeometry().setFromPoints([center, a, b]);
-    scene.add(new THREE.Mesh(geo, faceMat));
+  function bzMakeLabel(text, color='#ffffff'){
+    const cv = document.createElement('canvas');
+    cv.width = 128;
+    cv.height = 64;
+    const ctx = cv.getContext('2d');
+    ctx.clearRect(0,0,128,64);
+    ctx.font = 'bold 28px "JetBrains Mono", monospace';
+    ctx.fillStyle = color;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(text,64,32);
+    const tex = new THREE.CanvasTexture(cv);
+    const mat = new THREE.SpriteMaterial({ map: tex, transparent: true, depthTest: false });
+    const sprite = new THREE.Sprite(mat);
+    sprite.scale.set(0.35,0.175,1);
+    return sprite;
   }
 
-  // k-points
-  for(const [label, frac] of Object.entries(lat.kpoints)) {
-    const pt = fracToCart(frac, bz.b1, bz.b2, bz.b3).multiplyScalar(scale);
-    const sphere = new THREE.Mesh(
-      new THREE.SphereGeometry(label==='Γ' ? 0.045 : 0.028, 16, 16),
-      new THREE.MeshBasicMaterial({color: label==='Γ' ? 0xffffff : colorHex})
-    );
-    sphere.position.copy(pt);
-    scene.add(sphere);
+  function bzUpdateInfoPanel(lat){
+    const color = BZ_SYSTEM_COLORS[lat.system];
+    const overlay = document.getElementById('bz-infoOverlay');
+
+    const pathHTML = lat.path.map(seg => {
+      const row = seg.map((lbl,i) => {
+        const isLast = i === seg.length - 1;
+        return `<span class="bz-path-pt">${lbl}</span>${isLast ? '' : '<span class="bz-path-arrow">→</span>'}`;
+      }).join('');
+      return `<div class="bz-path-row">${row}</div>`;
+    }).join('<div class="bz-path-break"></div>');
+
+    const kptHTML = Object.entries(lat.kpoints).map(([lbl,frac]) => {
+      return `<div class="bz-kpt-chip">
+        <div class="bz-kpt-label">${lbl}</div>
+        <div class="bz-kpt-coords">(${frac.map(f => Number(f).toFixed(2)).join(',')})</div>
+      </div>`;
+    }).join('');
+
+    overlay.innerHTML = `
+      <div class="bz-info-title">${lat.name}</div>
+      <div class="bz-info-abbrev">${lat.abbrev}</div>
+      <div class="bz-info-system" style="background:${color}22;color:${color};">${lat.system}</div>
+      <hr class="bz-info-divider">
+      <div class="bz-info-section-label">High-Symmetry k-Points</div>
+      <div class="bz-kpts-grid">${kptHTML}</div>
+      <hr class="bz-info-divider">
+      <div class="bz-info-section-label">Band-Structure Path</div>
+      ${pathHTML}
+    `;
   }
 
-  updateInfo(lat);
-}
+  function bzUpdateSidebarActive(idx){
+    document.querySelectorAll('.bz-lat-btn').forEach(b => {
+      b.classList.toggle('active', parseInt(b.dataset.idx, 10) === idx);
+    });
+  }
 
-function updateInfo(lat) {
-  const info = document.getElementById('bravais-info');
-  info.innerHTML = `
-    <div style="font-weight:600;font-size:15.5px;color:var(--text);margin-bottom:4px;">${lat.name}</div>
-    <div style="font-family:var(--mono);color:var(--accent);margin-bottom:12px;">${lat.abbrev} • ${lat.system}</div>
-    <div style="color:var(--text2);font-size:13px;">High-symmetry k-points: <span style="color:var(--accent)">${Object.keys(lat.kpoints).join(' ')}</span></div>
-  `;
-}
+  function bzBuildSidebar(filter='All'){
+    const sidebar = document.getElementById('bz-sidebar');
+    sidebar.innerHTML = '';
+    const grouped = {};
 
-function toggleAutoRotate() {
-  autoRotate = !autoRotate;
-  document.getElementById('btnRotate').style.color = autoRotate ? 'var(--accent)' : '';
-}
+    BZ_LATTICES.forEach((lat, idx) => {
+      if(filter !== 'All' && lat.system !== filter) return;
+      if(!grouped[lat.system]) grouped[lat.system] = [];
+      grouped[lat.system].push({ lat, idx });
+    });
 
-function resetView() {
-  camera.position.set(5, 4, 6);
-  spherical.setFromVector3(camera.position);
-}
+    Object.entries(grouped).forEach(([sys, items]) => {
+      const glabel = document.createElement('div');
+      glabel.className = 'bz-sidebar-group-label';
+      glabel.textContent = sys;
+      sidebar.appendChild(glabel);
 
-// Mouse controls
-canvas.addEventListener('mousedown', e => {
-  isDragging = true;
-  lastX = e.clientX;
-  lastY = e.clientY;
-});
-window.addEventListener('mouseup', () => isDragging = false);
-window.addEventListener('mousemove', e => {
-  if(!isDragging) return;
-  const dx = e.clientX - lastX;
-  const dy = e.clientY - lastY;
-  lastX = e.clientX;
-  lastY = e.clientY;
+      items.forEach(({lat, idx}) => {
+        const btn = document.createElement('div');
+        btn.className = 'bz-lat-btn' + (idx === bzCurrentLatticeIdx ? ' active' : '');
+        btn.dataset.idx = idx;
+        const color = BZ_SYSTEM_COLORS[lat.system];
+        btn.innerHTML = `
+          <div class="bz-lat-dot" style="background:${color}"></div>
+          <div class="bz-lat-info">
+            <div class="bz-lat-name">${lat.name}</div>
+            <div class="bz-lat-abbrev">${lat.abbrev}</div>
+          </div>
+        `;
+        btn.addEventListener('click', () => bzLoadLattice(idx));
+        sidebar.appendChild(btn);
+      });
+    });
+  }
 
-  spherical.theta -= dx * 0.006;
-  spherical.phi -= dy * 0.006;
-  spherical.phi = Math.max(0.2, Math.min(Math.PI - 0.2, spherical.phi));
-  camera.position.setFromSpherical(spherical);
-  camera.lookAt(0,0,0);
-});
-canvas.addEventListener('wheel', e => {
-  e.preventDefault();
-  spherical.radius = Math.max(2, Math.min(12, spherical.radius + e.deltaY * 0.008));
-  camera.position.setFromSpherical(spherical);
-  camera.lookAt(0,0,0);
-});
+  function bzLoadLattice(idx){
+    bzCurrentLatticeIdx = idx;
+    const lat = BZ_LATTICES[idx];
+    const color = BZ_SYSTEM_COLORS[lat.system];
+    const colorHex = parseInt(color.replace('#',''),16);
 
-// Sidebar
-function buildSidebar() {
-  const sidebar = document.getElementById('bravais-sidebar');
-  sidebar.innerHTML = '';
-  LATTICES.forEach((lat, i) => {
-    const div = document.createElement('div');
-    div.style.cssText = `padding:10px 14px;margin:4px 0;border-radius:8px;cursor:pointer;font-size:13px;${i===0?'background:var(--bg2);border:1px solid var(--border)':''}`;
-    div.innerHTML = `● ${lat.name} <span style="float:right;font-family:var(--mono);color:var(--text2);font-size:11px;">${lat.abbrev}</span>`;
-    div.onclick = () => {
-      loadLattice(i);
-      document.querySelectorAll('#bravais-sidebar > div').forEach(d => d.style.background = '');
-      div.style.background = 'var(--bg2)';
-    };
-    sidebar.appendChild(div);
+    bzScene.children
+      .filter(obj => !obj.isLight)
+      .forEach(obj => bzScene.remove(obj));
+
+    const bz = bzBuildBZ(lat);
+    if(!bz) return;
+
+    const { vertices, b1, b2, b3 } = bz;
+    const maxR = Math.max(...vertices.map(v => v.length()));
+    const scale = 1.2 / (maxR || 1);
+    const verts = vertices.map(v => v.clone().multiplyScalar(scale));
+
+    const [b1s,b2s,b3s] = [b1,b2,b3].map(bv => bv.clone().multiplyScalar(scale));
+    const nn2 = [];
+    for(let i=-2;i<=2;i++){
+      for(let j=-2;j<=2;j++){
+        for(let k=-2;k<=2;k++){
+          const p = new THREE.Vector3()
+            .addScaledVector(b1s,i)
+            .addScaledVector(b2s,j)
+            .addScaledVector(b3s,k);
+          if(p.length()>0.01) nn2.push(p);
+        }
+      }
+    }
+    const nnSorted = nn2.sort((a,b)=>a.length()-b.length()).slice(0,26);
+
+    const edges = new Set();
+    for(let i=0;i<verts.length;i++){
+      for(let j=i+1;j<verts.length;j++){
+        const vi = verts[i], vj = verts[j];
+        let shared = 0;
+        for(const p of nnSorted){
+          const len = p.dot(p)/2;
+          const di = Math.abs(vi.dot(p)-len);
+          const dj = Math.abs(vj.dot(p)-len);
+          if(di < 0.04 && dj < 0.04) shared++;
+        }
+        if(shared >= 2) edges.add(`${i},${j}`);
+      }
+    }
+
+    const edgeMat = new THREE.LineBasicMaterial({
+      color: colorHex,
+      transparent: true,
+      opacity: 0.9
+    });
+
+    edges.forEach(e => {
+      const [i,j] = e.split(',').map(Number);
+      const geo = new THREE.BufferGeometry().setFromPoints([verts[i], verts[j]]);
+      bzScene.add(new THREE.Line(geo, edgeMat));
+    });
+
+    if(bzShowFaces){
+      const facesMap = new Map();
+
+      for(let vi=0;vi<verts.length;vi++){
+        for(const p of nnSorted){
+          const len = p.dot(p)/2;
+          if(Math.abs(verts[vi].dot(p)-len) < 0.04){
+            const key = p.toArray().map(x => Math.round(x*100)).join(',');
+            if(!facesMap.has(key)) facesMap.set(key, []);
+            facesMap.get(key).push(vi);
+          }
+        }
+      }
+
+      const faceMat = new THREE.MeshBasicMaterial({
+        color: colorHex,
+        transparent: true,
+        opacity: 0.07,
+        side: THREE.DoubleSide,
+        depthWrite: false
+      });
+
+      facesMap.forEach(fverts => {
+        if(fverts.length < 3) return;
+        const pts = fverts.map(i => verts[i]);
+        const c = new THREE.Vector3();
+        pts.forEach(p => c.add(p));
+        c.divideScalar(pts.length);
+
+        const norm = pts[0].clone().sub(c).cross(pts[1].clone().sub(c)).normalize();
+        const ref = pts[0].clone().sub(c).normalize();
+        const ref2 = new THREE.Vector3().crossVectors(norm, ref).normalize();
+
+        const sorted = pts
+          .map(p => {
+            const d = p.clone().sub(c);
+            return { p, angle: Math.atan2(d.dot(ref2), d.dot(ref)) };
+          })
+          .sort((a,b)=>a.angle-b.angle)
+          .map(x=>x.p);
+
+        const positions = [];
+        for(let i=1;i<sorted.length-1;i++){
+          positions.push(c.x,c.y,c.z);
+          positions.push(sorted[i].x,sorted[i].y,sorted[i].z);
+          positions.push(sorted[i+1].x,sorted[i+1].y,sorted[i+1].z);
+        }
+
+        if(positions.length > 0){
+          const geo = new THREE.BufferGeometry();
+          geo.setAttribute('position', new THREE.Float32BufferAttribute(positions,3));
+          geo.computeVertexNormals();
+          bzScene.add(new THREE.Mesh(geo, faceMat));
+        }
+      });
+    }
+
+    const kptsCart = {};
+    for(const [label, frac] of Object.entries(lat.kpoints)){
+      const pt = bzFracToCart(frac, b1, b2, b3).multiplyScalar(scale);
+      kptsCart[label] = pt;
+
+      const isGamma = label.startsWith('Γ');
+      const sphereGeo = new THREE.SphereGeometry(isGamma ? 0.028 : 0.022, 12, 12);
+      const sphereMat = new THREE.MeshBasicMaterial({
+        color: isGamma ? 0xe8eaf2 : colorHex
+      });
+      const sphere = new THREE.Mesh(sphereGeo, sphereMat);
+      sphere.position.copy(pt);
+      bzScene.add(sphere);
+
+      if(bzShowLabels){
+        const sprite = bzMakeLabel(label, isGamma ? '#ffffff' : color);
+        sprite.position.copy(pt).add(new THREE.Vector3(0.06,0.06,0.06));
+        bzScene.add(sprite);
+      }
+    }
+
+    if(bzShowPath){
+      const pathMat = new THREE.LineBasicMaterial({
+        color: colorHex,
+        transparent: true,
+        opacity: 0.95
+      });
+
+      for(const seg of lat.path){
+        const pts = [];
+        for(const lbl of seg){
+          if(kptsCart[lbl]) pts.push(kptsCart[lbl]);
+        }
+        if(pts.length >= 2){
+          const geo = new THREE.BufferGeometry().setFromPoints(pts);
+          bzScene.add(new THREE.Line(geo, pathMat));
+        }
+      }
+    }
+
+    const axLen = 0.5;
+    [[b1s,'kₓ'],[b2s,'kᵧ'],[b3s,'k_z']].forEach(([bv]) => {
+      const dir = bv.clone().normalize().multiplyScalar(axLen);
+      const geo = new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(), dir]);
+      bzScene.add(new THREE.Line(
+        geo,
+        new THREE.LineBasicMaterial({ color: 0x8899aa, transparent:true, opacity:0.35 })
+      ));
+    });
+
+    bzUpdateInfoPanel(lat);
+    bzUpdateSidebarActive(idx);
+  }
+
+  function bzToggleBtn(el){
+    el.classList.toggle('on');
+    return el.classList.contains('on');
+  }
+
+  document.getElementById('bz-toggleFaces').addEventListener('click', function(){
+    bzShowFaces = bzToggleBtn(this);
+    bzLoadLattice(bzCurrentLatticeIdx);
   });
-}
 
-// Init
-buildSidebar();
-loadLattice(0);
+  document.getElementById('bz-togglePath').addEventListener('click', function(){
+    bzShowPath = bzToggleBtn(this);
+    bzLoadLattice(bzCurrentLatticeIdx);
+  });
 
-function animate() {
-  requestAnimationFrame(animate);
-  if(autoRotate) {
-    spherical.theta += 0.0035;
-    camera.position.setFromSpherical(spherical);
-    camera.lookAt(0,0,0);
+  document.getElementById('bz-toggleLabels').addEventListener('click', function(){
+    bzShowLabels = bzToggleBtn(this);
+    bzLoadLattice(bzCurrentLatticeIdx);
+  });
+
+  document.getElementById('bz-btnAutoRotate').addEventListener('click', function(){
+    bzAutoRotate = !bzAutoRotate;
+    this.style.color = bzAutoRotate ? 'var(--accent)' : '';
+    this.style.borderColor = bzAutoRotate ? 'var(--accent)' : '';
+  });
+
+  document.getElementById('bz-btnReset').addEventListener('click', () => {
+    bzCamera.position.set(4,3,5);
+    bzCamera.lookAt(0,0,0);
+    bzPanOffset.set(0,0,0);
+    bzSpherical.setFromVector3(bzCamera.position);
+  });
+
+  document.getElementById('bz-sysPills').addEventListener('click', e => {
+    const pill = e.target.closest('.bz-pill');
+    if(!pill) return;
+    document.querySelectorAll('.bz-pill').forEach(p => p.classList.remove('active'));
+    pill.classList.add('active');
+    bzBuildSidebar(pill.dataset.sys);
+  });
+
+  bzCanvas.addEventListener('mousedown', e => {
+    bzIsDragging = true;
+    bzIsRightDrag = e.button === 2;
+    bzLastMouse = { x: e.clientX, y: e.clientY };
+  });
+
+  bzCanvas.addEventListener('contextmenu', e => e.preventDefault());
+
+  window.addEventListener('mouseup', () => { bzIsDragging = false; });
+
+  window.addEventListener('mousemove', e => {
+    if(!bzIsDragging) return;
+    const dx = e.clientX - bzLastMouse.x;
+    const dy = e.clientY - bzLastMouse.y;
+    bzLastMouse = { x: e.clientX, y: e.clientY };
+
+    if(bzIsRightDrag){
+      const panSpeed = 0.002;
+      const right = new THREE.Vector3()
+        .crossVectors(bzCamera.getWorldDirection(new THREE.Vector3()), bzCamera.up)
+        .normalize();
+      bzPanOffset.addScaledVector(right, -dx * panSpeed * bzCamera.position.length());
+      bzPanOffset.addScaledVector(bzCamera.up, dy * panSpeed * bzCamera.position.length());
+    } else {
+      bzSpherical.theta -= dx * 0.01;
+      bzSpherical.phi -= dy * 0.01;
+      bzSpherical.phi = Math.max(0.1, Math.min(Math.PI - 0.1, bzSpherical.phi));
+      bzCamera.position.setFromSpherical(bzSpherical).add(bzPanOffset);
+      bzCamera.lookAt(bzPanOffset);
+    }
+  });
+
+  bzCanvas.addEventListener('wheel', e => {
+    e.preventDefault();
+    bzSpherical.radius = Math.max(1.5, Math.min(15, bzSpherical.radius + e.deltaY * 0.005));
+    bzCamera.position.setFromSpherical(bzSpherical).add(bzPanOffset);
+    bzCamera.lookAt(bzPanOffset);
+  }, { passive:false });
+
+  document.addEventListener('keydown', e => {
+    if(e.key === 'ArrowRight') bzLoadLattice((bzCurrentLatticeIdx + 1) % BZ_LATTICES.length);
+    if(e.key === 'ArrowLeft') bzLoadLattice((bzCurrentLatticeIdx + BZ_LATTICES.length - 1) % BZ_LATTICES.length);
+  });
+
+  function bzAnimate(){
+    requestAnimationFrame(bzAnimate);
+    if(bzAutoRotate){
+      bzSpherical.theta += 0.005;
+      bzCamera.position.setFromSpherical(bzSpherical).add(bzPanOffset);
+      bzCamera.lookAt(bzPanOffset);
+    }
+    bzRenderer.render(bzScene, bzCamera);
   }
-  renderer.render(scene, camera);
-}
-animate();
+
+  bzBuildSidebar();
+  bzLoadLattice(0);
+  bzResize();
+  bzAnimate();
+})();
 </script>
+
+
+
+
+
+
+
+
+
+
 </body>
 </html>
 </body>
